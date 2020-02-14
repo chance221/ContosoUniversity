@@ -124,5 +124,10 @@ namespace ContosoUniversity.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Display()
+        {
+            return View(db.Students.ToList());
+        }
     }
 }
