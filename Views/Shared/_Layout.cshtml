@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <style>
         body {
             padding-top: 0px;
@@ -53,6 +53,10 @@
                     <li class="nav-item nav-link">
                         @Html.ActionLink("Enrollment", "Index", "Enrollment")
                     </li>
+                </ul>
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item nav-link"><a href="#"><i class="fas fa-registered"></i>Register</a></li>
+                    <li class="nav-item nav-link"><a href="#"><i class="fas fa-sign-in-alt"></i>Login</a></li>
                 </ul>
             </div>
         </nav>
