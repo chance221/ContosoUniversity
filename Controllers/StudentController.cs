@@ -21,6 +21,37 @@ namespace ContosoUniversity.Controllers
             return View(db.Students.ToList());
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDisplay([Bind(Include = "ID, LastName, FirstMidName, EnrollmentDate")] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(student).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Display");
+            }
+            return View(student);
+        }
+
+        //GET:Student/Edit/5
+        public ActionResult EditDisplay(int? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Student student = db.Students.Find(id);
+            
+            if(student == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(student);
+        }
+
         // GET: Student/Details/5
         public ActionResult Details(int? id)
         {
