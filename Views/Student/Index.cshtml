@@ -1,7 +1,9 @@
-﻿@model IEnumerable<ContosoUniversity.Models.Student>
+﻿@model PagedList.IPagedList<ContosoUniversity.Models.Student>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />@*Adds css for paged list results*@
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Students";
 }
 
 <h2>Index</h2>
@@ -9,16 +11,26 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("Index", "Student", FormMethod.Get))
+{
+    <p>
+        Find by name : @Html.TextBox("searchString", ViewBag.CurrentFilter as string)@*Adding a a parameter sets the value of the view bag to the search string*@
+        <input type="submit" value="Search"/>
+    </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParam } )
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstMidName)
+            @*Notice how this is not a strongly typed helper as it is not being incorporated into an action link
+                for sorting and filtering, we need to change the label helper to loosely typed because the
+                PagedList model won't include the information for the sttrongly typed label*@
+            @Html.DisplayName("First Name")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EnrollmentDate)
+            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.DateSortParam, cirrentFilter = ViewBag.CurrentFilter })
         </th>
         <th></th>
     </tr>
@@ -43,3 +55,11 @@
 }
 
 </table>
+<br/>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+@*Need to get questions answered regaring how when clicking the next arrow it keeps the search criteria as it is resetting when a link is selected (probaby in the view that 
+    is populating the PagedListPager*@
+@Html.PagedListPager(Model, page=> Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrnetSort, currentFilter = ViewBag.CurrenetFilter}))
