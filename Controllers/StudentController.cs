@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -142,7 +143,7 @@ namespace ContosoUniversity.Controllers
                 }
 
             }
-            catch (DataException)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("",
                     "Unable to save changes. Try again, and if the problem persists see your system administrator.");
@@ -183,10 +184,10 @@ namespace ContosoUniversity.Controllers
                 }
                 
             }
-            catch(DataException)
+            catch(RetryLimitExceededException)
             {
                 ModelState.AddModelError("",
-                    "Unsblr to save changes. Try again, and if the problem persists, see your system administrator");
+                    "Unable to save changes. Try again, and if the problem persists, see your system administrator");
             }
 
             return View(student);
@@ -228,8 +229,9 @@ namespace ContosoUniversity.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (DataException)
+            catch (RetryLimitExceededException)
             {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator");
                 return RedirectToAction("Delete", new { id = id, SaveChangesError = true }); //notice how you pass in the id when you are redirecting
             }
         }
