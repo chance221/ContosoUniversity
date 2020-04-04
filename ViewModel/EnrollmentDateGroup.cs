@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ContosoUniversity.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContosoUniversity.ViewModels
@@ -10,4 +13,7 @@ namespace ContosoUniversity.ViewModels
 
         public int StudentCount { get; set; }
     }
+
+    
+
 }
